@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Valentine 💖</title>
+
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  background-color: #ffd1e6;
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(255,105,180,0.45) 8px, transparent 9px),
+    radial-gradient(circle at 70% 40%, rgba(255,182,193,0.45) 10px, transparent 11px),
+    radial-gradient(circle at 40% 80%, rgba(255,105,180,0.45) 7px, transparent 8px);
+  background-size: 120px 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Comic Sans MS", cursive;
+  overflow: hidden;
+}
+
+.container {
+  text-align: center;
+  z-index: 10;
+}
+
+h1 {
+  font-size: 3rem;
+  color: #c2185b;
+  text-shadow: 1px 1px 6px #ff8fbf;
+}
+
+#message {
+  display: none;
+  font-size: 1.6rem;
+  color: #b0003a;
+  font-weight: bold;
+  margin-top: 15px;
+}
+
+#finalText {
+  display: none;
+  font-size: 2.6rem;
+  color: #ad1457;
+  margin-top: 20px;
+}
+
+button {
+  font-size: 1.6rem;
+  padding: 15px 40px;
+  margin: 15px;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+}
+
+#yes {
+  background: #fff7e6;
+  color: #d81b60;
+  animation: pulse 1.1s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.18); }
+  100% { transform: scale(1); }
+}
+
+#no {
+  background: #ff5c8a;
+  color: white;
+  position: absolute;
+}
+
+.hearts {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+
+.heart {
+  position: absolute;
+  font-size: 28px;
+  animation: rain 4s linear forwards;
+}
+
+@keyframes rain {
+  0% { transform: translateY(-10vh); opacity: 1; }
+  100% { transform: translateY(110vh); opacity: 0; }
+}
+
+.burst {
+  animation: burst 1s ease-out forwards;
+}
+
+@keyframes burst {
+  from { transform: scale(0.3); opacity: 1; }
+  to {
+    transform: translate(var(--x), var(--y)) scale(1.8);
+    opacity: 0;
+  }
+}
+
+#cat {
+  display: none;
+  margin-top: 25px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1 id="question">Will you be my Valentine Mr. Umag Jain? 💖</h1>
+
+  <button id="yes">YES 🐱💃</button>
+  <button id="no">NO 💔</button>
+
+  <div id="message">Stopppppp click YES!! 😠</div>
+  <div id="finalText">You are stuck with me 💖</div>
+
+  <div id="cat">
+    <img src="https://media.tenor.com/bCfpwMjfAi0AAAAC/cat-dance.gif"
+         alt="Dancing Cat"
+         width="260">
+  </div>
+</div>
+
+<div class="hearts" id="hearts"></div>
+
+<script>
+const noBtn = document.getElementById("no");
+const yesBtn = document.getElementById("yes");
+const message = document.getElementById("message");
+const hearts = document.getElementById("hearts");
+const cat = document.getElementById("cat");
+const question = document.getElementById("question");
+const finalText = document.getElementById("finalText");
+
+let scale = 1;
+let raining = false;
+
+function moveNo() {
+  scale -= 0.12;
+
+  if (scale <= 0.25) {
+    scale = 0.25;
+    noBtn.style.opacity = "0";
+    message.style.display = "block";
+    return;
+  }
+
+  noBtn.style.left = Math.random() * (window.innerWidth - 120) + "px";
+  noBtn.style.top = Math.random() * (window.innerHeight - 60) + "px";
+  noBtn.style.transform = `scale(${scale})`;
+}
+
+noBtn.addEventListener("mouseover", moveNo);
+noBtn.addEventListener("click", moveNo);
+
+function rainHearts() {
+  if (raining) return;
+  raining = true;
+
+  setInterval(() => {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerText = "💖";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = Math.random() * 20 + 22 + "px";
+    hearts.appendChild(heart);
+
+    setTimeout(() => heart.remove(), 4000);
+  }, 150);
+}
+
+function burstHearts() {
+  for (let i = 0; i < 25; i++) {
+    const heart = document.createElement("div");
+    heart.className = "heart burst";
+    heart.innerText = "💖";
+    heart.style.left = "50%";
+    heart.style.top = "50%";
+    heart.style.setProperty("--x", `${Math.random()*300-150}px`);
+    heart.style.setProperty("--y", `${Math.random()*300-150}px`);
+    hearts.appendChild(heart);
+    setTimeout(() => heart.remove(), 1000);
+  }
+}
+
+yesBtn.addEventListener("click", () => {
+  question.style.display = "none";
+  yesBtn.style.display = "none";
+  noBtn.style.display = "none";
+  message.style.display = "none";
+  finalText.style.display = "block";
+  cat.style.display = "block";
+  burstHearts();
+  rainHearts();
+});
+</script>
+
+</body>
+</html>
